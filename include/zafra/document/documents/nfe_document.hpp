@@ -12,12 +12,17 @@ public:
     core::DocumentType GetType() const override { return core::DocumentType::NFe; }
     std::string GetVersion() const override { return m_version; }
     std::string GetId() const override { return m_id; }
+    std::string getChaveAcesso() const override { return m_chaveAcesso; }
+    core::OperationType getTipoOperacao() const override { return m_tipoOperacao; }
 
     bool Parse(const core::IXmlNode* root_node) override;
 
 private:
     std::string m_version;
     std::string m_id;
+    std::string m_chaveAcesso;
+    core::OperationType m_tipoOperacao;
+
 };
 
 } // namespace document

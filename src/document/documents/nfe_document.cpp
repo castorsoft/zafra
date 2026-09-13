@@ -30,7 +30,17 @@ bool NFeDocument::Parse(const core::IXmlNode* root_node) {
         auto id = infNFe->GetAttribute("Id");
         if (id) {
             m_id = id.value();
+            m_chaveAcesso = m_id.replace(m_id.find("NFe"), 3, "");
         }
+
+        if (auto ide = infNFe->GetChild("ide")) {
+            m_tipoOperacao = zafra::core::ParseOperationType(ide->GetChild("tpNF")->GetValue());
+        }
+
+        if (auto emit = infNFe->GetChild("emit")) {
+
+        }
+
         return true;
     }
 

@@ -1,0 +1,8 @@
+{
+    "xml.fileAssociations": [
+        {
+            "pattern": "**/*-nfe.xml",
+            "systemId": "schemas/nfe/v400/procNFe_v4.00.xsd"
+        }
+    ]
+}
