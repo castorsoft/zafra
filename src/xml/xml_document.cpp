@@ -17,7 +17,7 @@ std::string XmlNode::GetName() const {
 std::string XmlNode::GetValue() const {
     if (!m_node) return "";
     const char* text = m_node->GetText();
-    return text ? text : "";
+    return text ? std::string(text) : std::string("");
 }
 
 std::unique_ptr<core::IXmlNode> XmlNode::GetChild(const std::string& name) const {
@@ -25,6 +25,18 @@ std::unique_ptr<core::IXmlNode> XmlNode::GetChild(const std::string& name) const
     const tinyxml2::XMLElement* child = m_node->FirstChildElement(name.c_str());
     if (!child) return nullptr;
     return std::make_unique<XmlNode>(child);
+}
+
+std::vector<std::unique_ptr<core::IXmlNode>> XmlNode::GetChildren(const std::string& name) const {
+    std::vector<std::unique_ptr<core::IXmlNode>> children;
+    if (!m_node) return children;
+
+    for (const tinyxml2::XMLElement* child = m_node->FirstChildElement(name.c_str());
+         child != nullptr;
+         child = child->NextSiblingElement(name.c_str())) {
+        children.push_back(std::make_unique<XmlNode>(child));
+    }
+    return children;
 }
 
 std::unique_ptr<core::IXmlNode> XmlNode::SelectSingleNode(const std::string& xpath) const {

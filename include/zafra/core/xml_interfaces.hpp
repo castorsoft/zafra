@@ -3,6 +3,7 @@
 #include <string>
 #include <memory>
 #include <optional>
+#include <vector>
 
 namespace zafra {
 namespace core {
@@ -14,6 +15,7 @@ public:
     virtual std::string GetName() const = 0;
     virtual std::string GetValue() const = 0;
     virtual std::unique_ptr<IXmlNode> GetChild(const std::string& name) const = 0;
+    virtual std::vector<std::unique_ptr<IXmlNode>> GetChildren(const std::string& name) const = 0;
     virtual std::unique_ptr<IXmlNode> SelectSingleNode(const std::string& xpath) const = 0;
     virtual std::optional<std::string> GetAttribute(const std::string& name) const = 0;
 };

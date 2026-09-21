@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<nfeProc versao="4.00" xmlns="http://www.portalfiscal.inf.br/nfe">
+    <NFe xmlns="http://www.portalfiscal.inf.br/nfe">
+        <infNFe Id="NFe42260745049169000174550020000018621523491880" versao="4.00">
+            <ide>
+                <cUF>42</cUF>
+                <cNF>52349188</cNF>
+                <natOp>DEVOLUCAO DE COMPRA PARA COMER</natOp>
+                <mod>55</mod>
+                <serie>2</serie>
+                <nNF>1862</nNF>
+                <dhEmi>2026-07-30T00:00:00-03:00</dhEmi>
+                <dhSaiEnt>2026-07-30T17:42:23-03:00</dhSaiEnt>
+                <tpNF>1</tpNF>
+                <idDest>1</idDest>
+                <cMunFG>4218509</cMunFG>
+                <tpImp>1</tpImp>
+                <tpEmis>1</tpEmis>
+                <cDV>0</cDV>
+                <tpAmb>1</tpAmb>
+                <finNFe>4</finNFe>
+                <indFinal>0</indFinal>
+                <indPres>1</indPres>
+                <indIntermed>0</indIntermed>
+                <procEmi>0</procEmi>
+                <verProc>Lux2026</verProc>
+                <NFref>
+                    <refNFe>42260784586205000190550000046934511043600968</refNFe>
+                </NFref>
+            </ide>
+            <emit>
+                <CNPJ>45049169000174</CNPJ>
+                <xNome>GT COMERCIO E AUTO CENTER LTDA</xNome>
+                <xFant>GT AUTO CENTER</xFant>
+                <enderEmit>
+                    <xLgr>RODOVIA SC 465</xLgr>
+                    <nro>2340</nro>
+                    <xCpl>KM49;SALAD</xCpl>
+                    <xBairro>DISTRITO INDUSTRIAL SEDE</xBairro>
+                    <cMun>4218509</cMun>
+                    <xMun>TREZE TILIAS</xMun>
+                    <UF>SC</UF>
+                    <CEP>89650000</CEP>
+                    <cPais>1058</cPais>
+                    <xPais>BRASIL</xPais>
+                    <fone>49353377504</fone>
+                </enderEmit>
+                <IE>261516817</IE>
+                <IM>7255</IM>
+                <CNAE>7319002</CNAE>
+                <CRT>1</CRT>
+            </emit>
+            <dest>
+                <CNPJ>84586205000190</CNPJ>
+                <xNome>SCHERER S/A COMERCIO DE AUTOPEAS</xNome>
+                <enderDest>
+                    <xLgr>RUA ERNESTO DE MARCO</xLgr>
+                    <nro>150</nro>
+                    <xBairro>JARDIM CIDADE ALTA</xBairro>
+                    <cMun>4209003</cMun>
+                    <xMun>JOACABA</xMun>
+                    <UF>SC</UF>
+                    <CEP>89600000</CEP>
+                    <cPais>1058</cPais>
+                    <xPais>BRASIL</xPais>
+                    <fone>00004932023202</fone>
+                </enderDest>
+                <indIEDest>1</indIEDest>
+                <IE>250014963</IE>
+            </dest>
+            <det nItem="1">
+                <prod>
+                    <cProd>5506</cProd>
+                    <cEAN>SEM GTIN</cEAN>
+                    <xProd>TRIADE T720 - POLIA VIRABREQUIM ANTIVIBRATORIA DAMPER MBB SPRINTER 415 2018 515 201 - 145683</xProd>
+                    <NCM>84839000</NCM>
+                    <CEST>0105000</CEST>
+                    <CFOP>5202</CFOP>
+                    <uCom>UN</uCom>
+                    <qCom>1.0000</qCom>
+                    <vUnCom>3278.0000000000</vUnCom>
+                    <vProd>3278.00</vProd>
+                    <cEANTrib>SEM GTIN</cEANTrib>
+                    <uTrib>UN</uTrib>
+                    <qTrib>1.0000</qTrib>
+                    <vUnTrib>3278.0000000000</vUnTrib>
+                    <indTot>1</indTot>
+                </prod>
+                <imposto>
+                    <ICMS>
+                        <ICMSSN900>
+                            <orig>0</orig>
+                            <CSOSN>900</CSOSN>
+                            <modBC>3</modBC>
+                            <vBC>3278.00</vBC>
+                            <pICMS>12.0000</pICMS>
+                            <vICMS>393.36</vICMS>
+                        </ICMSSN900>
+                    </ICMS>
+                    <IPI>
+                        <cEnq>999</cEnq>
+                        <IPINT>
+                            <CST>53</CST>
+                        </IPINT>
+                    </IPI>
+                    <PIS>
+                        <PISOutr>
+                            <CST>99</CST>
+                            <vBC>0.00</vBC>
+                            <pPIS>0.0000</pPIS>
+                            <vPIS>0.00</vPIS>
+                        </PISOutr>
+                    </PIS>
+                    <COFINS>
+                        <COFINSOutr>
+                            <CST>99</CST>
+                            <vBC>0.00</vBC>
+                            <pCOFINS>0.0000</pCOFINS>
+                            <vCOFINS>0.00</vCOFINS>
+                        </COFINSOutr>
+                    </COFINS>
+                </imposto>
+            </det>
+            <total>
+                <ICMSTot>
+                    <vBC>3278.00</vBC>
+                    <vICMS>393.36</vICMS>
+                    <vICMSDeson>0.00</vICMSDeson>
+                    <vFCP>0.00</vFCP>
+                    <vBCST>0.00</vBCST>
+                    <vST>0.00</vST>
+                    <vFCPST>0.00</vFCPST>
+                    <vFCPSTRet>0.00</vFCPSTRet>
+                    <vProd>3278.00</vProd>
+                    <vFrete>0.00</vFrete>
+                    <vSeg>0.00</vSeg>
+                    <vDesc>0.00</vDesc>
+                    <vII>0.00</vII>
+                    <vIPI>0.00</vIPI>
+                    <vIPIDevol>0.00</vIPIDevol>
+                    <vPIS>0.00</vPIS>
+                    <vCOFINS>0.00</vCOFINS>
+                    <vOutro>0.00</vOutro>
+                    <vNF>3278.00</vNF>
+                </ICMSTot>
+            </total>
+            <transp>
+                <modFrete>9</modFrete>
+                <vol>
+                    <qVol>1</qVol>
+                    <esp>ESPECIE</esp>
+                    <marca>MARCA</marca>
+                </vol>
+            </transp>
+            <pag>
+                <detPag>
+                    <tPag>90</tPag>
+                    <vPag>0.00</vPag>
+                </detPag>
+            </pag>
+            <infAdic>
+                <infAdFisco>DEVOLUCAO DE COMPRA REF NF 4693451 DE 29/07/2026</infAdFisco>
+            </infAdic>
+            <infRespTec>
+                <CNPJ>20856552000103</CNPJ>
+                <xContato>Lux Sistemas</xContato>
+                <email>comercial@luxsistemas.com.br</email>
+                <fone>4935650078</fone>
+            </infRespTec>
+        </infNFe>
+        <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
+            <SignedInfo>
+                <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"></CanonicalizationMethod>
+                <SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1"></SignatureMethod>
+                <Reference URI="#NFe42260745049169000174550020000018621523491880">
+                    <Transforms>
+                        <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"></Transform>
+                        <Transform Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"></Transform>
+                    </Transforms>
+                    <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"></DigestMethod>
+                    <DigestValue>edqNLkCtgcWNYcFcup0B8bgewMc=</DigestValue>
+                </Reference>
+            </SignedInfo>
+            <SignatureValue>
+                tomd8AndS6Fu2KTw72dqPT4whv5+XP+ptEJjakNaFdU/NgobX1NqgR9aCO5eZq0tp0r13VaIeANhfiJdp5JdSDyDYfrca1Rpgu26vnNbsxqDXyJGMbsrXdJ2LZOD9wmdiLE5Ot5EAyJFIvxBuNWSzbypERP/28T52pPtxfzlbRxehD1vXckJBQgrr3VV7hdzCyUVkm3wvrJ9A+JafOUOVZAoQJd6bCHPJMotikZ2S7uOEsJeyoaQ3vS6jxSBiVlJoC7raRDjaNWvFLPWOEBnOo6SyP3bMQVOyN392sXz9I4Ua9ZqqiM51hyVUu1dtlKaH2i7DBeVyTICGe52+raJFg==</SignatureValue>
+            <KeyInfo>
+                <X509Data>
+                    <X509Certificate>
+                        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</X509Certificate>
+                </X509Data>
+            </KeyInfo>
+        </Signature>
+    </NFe>
+    <protNFe versao="4.00">
+        <infProt>
+            <tpAmb>1</tpAmb>
+            <verAplic>SVRS2607051326DR</verAplic>
+            <chNFe>42260745049169000174550020000018621523491880</chNFe>
+            <dhRecbto>2026-07-30T17:41:40-03:00</dhRecbto>
+            <nProt>242260352686874</nProt>
+            <digVal>edqNLkCtgcWNYcFcup0B8bgewMc=</digVal>
+            <cStat>100</cStat>
+            <xMotivo>Autorizado o uso da NF-e</xMotivo>
+        </infProt>
+    </protNFe>
+</nfeProc>

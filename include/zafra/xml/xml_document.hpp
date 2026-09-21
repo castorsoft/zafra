@@ -14,6 +14,7 @@ public:
     std::string GetName() const override;
     std::string GetValue() const override;
     std::unique_ptr<core::IXmlNode> GetChild(const std::string& name) const override;
+    std::vector<std::unique_ptr<core::IXmlNode>> GetChildren(const std::string& name) const override;
     std::unique_ptr<core::IXmlNode> SelectSingleNode(const std::string& xpath) const override;
     std::optional<std::string> GetAttribute(const std::string& name) const override;
 

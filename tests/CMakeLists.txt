@@ -16,6 +16,7 @@ add_executable(zafra_tests
     xml/xml_document_test.cpp
     document/document_factory_test.cpp
     webservice/distribuicao_dfe_test.cpp
+    integration/nfe_integration_test.cpp
 )
 
 target_link_libraries(zafra_tests
@@ -23,6 +24,8 @@ target_link_libraries(zafra_tests
         zafra
         GTest::gtest_main
 )
+
+target_compile_definitions(zafra_tests PRIVATE TEST_DATA_DIR="${CMAKE_CURRENT_SOURCE_DIR}/data")
 
 include(GoogleTest)
 gtest_discover_tests(zafra_tests)
