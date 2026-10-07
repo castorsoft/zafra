@@ -1,6 +1,8 @@
 #include "zafra/document/documents/nfe_document.hpp"
 #include <sstream>
 #include <locale>
+#include <ctime>
+#include <cstdio>
 
 namespace {
     double ParseDouble(const std::string& str) {
@@ -10,6 +12,52 @@ namespace {
         double val = 0.0;
         iss >> val;
         return val;
+    }
+
+    time_t ParseIso8601(const std::string& str) {
+        if (str.empty()) return 0;
+
+        int year = 0, month = 0, day = 0;
+        int hour = 0, min = 0, sec = 0;
+        char tz_sign = '\0';
+        int tz_hour = 0, tz_min = 0;
+
+        // Formato padrão SEFAZ: "AAAA-MM-DDThh:mm:ssTZD" (ex: "2026-07-30T17:42:23-03:00")
+        int matched = std::sscanf(str.c_str(), "%4d-%2d-%2dT%2d:%2d:%2d%c%2d:%2d",
+                                  &year, &month, &day, &hour, &min, &sec,
+                                  &tz_sign, &tz_hour, &tz_min);
+
+        if (matched < 3) {
+            // Suporta formatos mais antigos de NF-e apenas com data: "AAAA-MM-DD"
+            matched = std::sscanf(str.c_str(), "%4d-%2d-%2d", &year, &month, &day);
+            if (matched < 3) return 0;
+        }
+
+        struct tm tm = {};
+        tm.tm_year = year - 1900;
+        tm.tm_mon = month - 1;
+        tm.tm_mday = day;
+        tm.tm_hour = hour;
+        tm.tm_min = min;
+        tm.tm_sec = sec;
+        tm.tm_isdst = 0;
+
+#if defined(_WIN32)
+        time_t t = _mkgmtime(&tm);
+#else
+        time_t t = timegm(&tm);
+#endif
+
+        if (t == static_cast<time_t>(-1)) return 0;
+
+        // Ajusta o offset para UTC (Local = UTC + Offset => UTC = Local - Offset)
+        if (tz_sign == '-') {
+            t += (tz_hour * 3600) + (tz_min * 60);
+        } else if (tz_sign == '+') {
+            t -= (tz_hour * 3600) + (tz_min * 60);
+        }
+
+        return t;
     }
 }
 
@@ -128,7 +176,10 @@ bool NFeDocumentEndereco::Parse(const core::IXmlNode *enderEmitNode) {
     m_cep = enderEmitNode->GetChild("CEP")->GetValue();
     m_codPais = std::stoi(enderEmitNode->GetChild("cPais")->GetValue());
     m_pais = enderEmitNode->GetChild("xPais")->GetValue();
-    m_fone = enderEmitNode->GetChild("fone")->GetValue();
+
+    if (enderEmitNode->GetChild("fone")) {
+        m_fone = enderEmitNode->GetChild("fone")->GetValue();
+    }
 
     return true;
 }
@@ -140,7 +191,10 @@ NFeDocumentDest::~NFeDocumentDest() {
 bool NFeDocumentDest::Parse(const core::IXmlNode *destNode) {
     m_cnpjCpf = destNode->GetChild("CNPJ") ? destNode->GetChild("CNPJ")->GetValue() : destNode->GetChild("CPF")->GetValue();
     m_nome = destNode->GetChild("xNome")->GetValue();
-    m_inscricaoEstadual = destNode->GetChild("IE")->GetValue();
+    if (destNode->GetChild("IE")) {
+        m_inscricaoEstadual = destNode->GetChild("IE")->GetValue();
+    }
+
     if (destNode->GetChild("IM")) {
         m_inscricaoMunicipal = destNode->GetChild("IM")->GetValue();
     }
@@ -185,10 +239,11 @@ bool NFeDocumentIde::Parse(const core::IXmlNode *ideNode) {
     if (auto node = ideNode->GetChild("mod")) m_mod = node->GetValue();
     if (auto node = ideNode->GetChild("serie")) m_serie = std::stoi(node->GetValue());
     if (auto node = ideNode->GetChild("nNF")) m_nNf = std::stoi(node->GetValue());
+    if (auto node = ideNode->GetChild("dhEmi")) m_dhEmissao = ParseIso8601(node->GetValue());
+    if (auto node = ideNode->GetChild("dhSaiEnt")) m_dhSaiEnt = ParseIso8601(node->GetValue());
+
     if (auto node = ideNode->GetChild("tpNF")) m_tpNf = node->GetValue();
     if (auto node = ideNode->GetChild("idDest")) m_idDest = node->GetValue();
-
-    // dhEmi / dhSaiEnt handling could be added here if needed.
 
     return true;
 }

@@ -44,6 +44,12 @@ TEST_P(NFeIntegrationTest, LeXMLComSucessoSemSegfault) {
     if (emit) {
         EXPECT_FALSE(emit->GetCnpjCpf().empty()) << "CNPJ/CPF do Emitente está vazio.";
     }
+
+    // Verifica dados de Identificação da NF-e (ide)
+    auto ide = nfe->GetIde();
+    if (ide) {
+        EXPECT_GT(ide->GetDhEmissao(), 0) << "Data de emissão (dhEmi) não foi parseada corretamente.";
+    }
 }
 
 #ifndef TEST_DATA_DIR

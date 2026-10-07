@@ -26,14 +26,14 @@ public:
     bool Parse(const core::IXmlNode* ideNode);
 
 private:
-    int m_cUf;
+    int m_cUf = 0;
     std::string m_cNf;
     std::string m_natOp;
     std::string m_mod;
-    int m_serie;
-    int m_nNf;
-    time_t m_dhEmissao;
-    time_t m_dhSaiEnt;
+    int m_serie = 0;
+    int m_nNf = 0;
+    time_t m_dhEmissao = 0;
+    time_t m_dhSaiEnt = 0;
     std::string m_tpNf;
     std::string m_idDest;
 };
@@ -44,7 +44,7 @@ public:
 
     std::string GetLogradouro() const { return m_logradouro; }
     std::string GetNumero() const { return m_numero; }
-    std::string GetComplemento() const { return m_complemento; }
+    std::optional<std::string> GetComplemento() const { return m_complemento; }
     std::string GetBairro() const  { return m_bairro; }
     int GetCodMunicipio() const { return m_codMunicipio; }
     std::string GetMunicipio() const { return m_municipio; }
@@ -52,14 +52,14 @@ public:
     std::string GetCEP() const { return m_cep; }
     int GetCodPais() const { return m_codPais; }
     std::string GetPais() const { return m_pais; }
-    std::string GetFone() const { return m_fone; }
+    std::optional<std::string> GetFone() const { return m_fone; }
 
     bool Parse(const core::IXmlNode* enderEmitNode);
 
 private:
     std::string m_logradouro;
     std::string m_numero;
-    std::string m_complemento;
+    std::optional<std::string> m_complemento;
     std::string m_bairro;
     int m_codMunicipio;
     std::string m_municipio;
@@ -67,7 +67,7 @@ private:
     std::string m_cep;
     int m_codPais;
     std::string m_pais;
-    std::string m_fone;
+    std::optional<std::string> m_fone;
 };
 
 class NFeDocumentDest {
@@ -77,9 +77,9 @@ public:
 
     std::string GetCnpjCpf() const { return m_cnpjCpf; }
     std::string GetNome() const { return m_nome; }
-    std::string GetInscricaoEstadual() const { return m_inscricaoEstadual; }
-    std::string GetInscricaoMunicipal() const { return m_inscricaoMunicipal; }
-    std::string GetEmail() const { return m_email; }
+    std::optional<std::string> GetInscricaoEstadual() const { return m_inscricaoEstadual; }
+    std::optional<std::string> GetInscricaoMunicipal() const { return m_inscricaoMunicipal; }
+    std::optional<std::string> GetEmail() const { return m_email; }
 
     NFeDocumentEndereco* GetEnderDest() const { return m_enderDest; }
 
@@ -87,9 +87,9 @@ public:
 private:
     std::string m_cnpjCpf;
     std::string m_nome;
-    std::string m_inscricaoEstadual;
-    std::string m_inscricaoMunicipal;
-    std::string m_email;
+    std::optional<std::string> m_inscricaoEstadual;
+    std::optional<std::string> m_inscricaoMunicipal;
+    std::optional<std::string> m_email;
 
     NFeDocumentEndereco* m_enderDest = nullptr;
 };
