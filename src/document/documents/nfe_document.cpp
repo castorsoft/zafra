@@ -262,6 +262,7 @@ bool NFeDocumentDetProd::Parse(const core::IXmlNode *prodNode)
     if (auto node = prodNode->GetChild("qCom")) m_qCom = ParseDouble(node->GetValue());
     if (auto node = prodNode->GetChild("vUnCom")) m_vUnCom = ParseDouble(node->GetValue());
     if (auto node = prodNode->GetChild("vProd")) m_vProd = ParseDouble(node->GetValue());
+    if (auto node = prodNode->GetChild("vDesc")) m_vDesc = ParseDouble(node->GetValue());
     if (auto node = prodNode->GetChild("cEANTrib")) m_cEanTrib = node->GetValue();
     if (auto node = prodNode->GetChild("uTrib")) m_uTrib = node->GetValue();
     if (auto node = prodNode->GetChild("qTrib")) m_qTrib = ParseDouble(node->GetValue());
@@ -404,7 +405,7 @@ bool NFeDocumentDetImpostoPISST::Parse(const core::IXmlNode *pisstNode) {
     if (!pisstNode) return false;
 
     if (auto node = pisstNode->GetChild("vBC")) m_vBC = ParseDouble(node->GetValue());
-    if (auto node = pisstNode->GetChild("pPIS")) m_pPis = ParseDouble(node->GetValue());
+    if (auto node = pisstNode->GetChild("pPIS")) m_pPIS = ParseDouble(node->GetValue());
     if (auto node = pisstNode->GetChild("qBCProd")) m_qBCProd = ParseDouble(node->GetValue());
     if (auto node = pisstNode->GetChild("vAliqProd")) m_vAliqProd = ParseDouble(node->GetValue());
     if (auto node = pisstNode->GetChild("vPIS")) m_vPIS = ParseDouble(node->GetValue());

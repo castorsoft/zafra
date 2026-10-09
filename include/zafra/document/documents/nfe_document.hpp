@@ -124,16 +124,17 @@ public:
     NFeDocumentDetProd() = default;
 
     std::string GetCProd() const { return m_cProd; }
-    std::string GetCEan() const { return m_cEan; }
+    std::string GetCEAN() const { return m_cEan; }
     std::string GetXProd() const { return m_xProd; }
-    std::string GetNcm() const { return m_ncm; }
-    std::string GetCest() const { return m_cest; }
-    std::string GetCfop() const { return m_cfop; }
+    std::string GetNCM() const { return m_ncm; }
+    std::string GetCEST() const { return m_cest; }
+    std::string GetCFOP() const { return m_cfop; }
     std::string GetUCom() const { return m_uCom; }
     double GetQCom() const { return m_qCom; }
     double GetVUnCom() const { return m_vUnCom; }
     double GetVProd() const { return m_vProd; }
-    std::string GetCEanTrib() const { return m_cEanTrib; }
+    std::optional<double> GetVDesc() const { return m_vDesc; }
+    std::string GetCEANTrib() const { return m_cEanTrib; }
     std::string GetUTrib() const { return m_uTrib; }
     double GetQTrib() const { return m_qTrib; }
     double GetVUnTrib() const { return m_vUnTrib; }
@@ -151,6 +152,7 @@ private:
     double m_qCom;
     double m_vUnCom;
     double m_vProd;
+    std::optional<double> m_vDesc;
     std::string m_cEanTrib;
     std::string m_uTrib;
     double m_qTrib;
@@ -186,6 +188,11 @@ public:
     NFeDocumentDetImpostoIPI() = default;
     ~NFeDocumentDetImpostoIPI();
 
+    std::string GetCST() const { return m_CST; }
+    std::optional<double> GetVBC() const { return m_vBC; }
+    std::optional<double> GetPIPI() const { return m_pIPI; }
+    std::optional<double> GetVIPI() const { return m_vIPI; }
+
     bool Parse(const core::IXmlNode* ipiNode);
 private:
     std::string m_CST;
@@ -220,10 +227,10 @@ public:
 
     std::string GetCST() const { return m_CST; }
     std::optional<double> GetVBC() const { return m_vBC; }
-    std::optional<double> GetPPis() const { return m_pPIS; }
+    std::optional<double> GetPPIS() const { return m_pPIS; }
     std::optional<double> GetQBcProd() const { return m_qBCProd; }
     std::optional<double> GetVAliqProd() const { return m_vAliqProd; }
-    double GetVPis() const { return m_vPIS; }
+    double GetVPIS() const { return m_vPIS; }
 
     bool Parse(const core::IXmlNode* pisNode);
 
@@ -241,7 +248,7 @@ public:
     NFeDocumentDetImpostoPISST() = default;
 
     std::optional<double> GetVBC() const { return m_vBC; }
-    std::optional<double> GetPPIS() const { return m_pPis; }
+    std::optional<double> GetPPIS() const { return m_pPIS; }
     std::optional<double> GetQBCProd() const { return m_qBCProd; }
     std::optional<double> GetVAliqProd() const { return m_vAliqProd; }
     double GetVPIS() const { return m_vPIS; }
@@ -250,7 +257,7 @@ public:
 
 private:
     std::optional<double> m_vBC;
-    std::optional<double> m_pPis;
+    std::optional<double> m_pPIS;
     std::optional<double> m_qBCProd;
     std::optional<double> m_vAliqProd;
     double m_vPIS;
@@ -261,10 +268,10 @@ public:
 
     std::string GetCST() const { return m_CST; }
     std::optional<double> GetVBC() const { return m_vBC; }
-    std::optional<double> GetPCofins() const { return m_pCOFINS; }
+    std::optional<double> GetPCOFINS() const { return m_pCOFINS; }
     std::optional<double> GetQBcProd() const { return m_qBCProd; }
     std::optional<double> GetVAliqProd() const { return m_vAliqProd; }
-    double GetVCofins() const { return m_vCOFINS; }
+    double GetVCOFINS() const { return m_vCOFINS; }
 
     bool Parse(const core::IXmlNode* cofinsNode);
 
