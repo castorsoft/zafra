@@ -18,6 +18,7 @@ public:
     virtual std::vector<std::unique_ptr<IXmlNode>> GetChildren(const std::string& name) const = 0;
     virtual std::unique_ptr<IXmlNode> SelectSingleNode(const std::string& xpath) const = 0;
     virtual std::optional<std::string> GetAttribute(const std::string& name) const = 0;
+    virtual std::string ToString() const = 0;
 };
 
 class IXmlDocument {

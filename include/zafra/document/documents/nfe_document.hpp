@@ -413,6 +413,9 @@ public:
     NFeDocument() = default;
     ~NFeDocument();
 
+    std::string GetXML() const override { return m_xml; }
+    void SetXML(const std::string& xml) override { m_xml = xml; }
+
     core::DocumentType GetType() const override { return core::DocumentType::NFe; }
     std::string GetVersion() const override { return m_version; }
     std::string GetId() const override { return m_id; }
@@ -427,6 +430,7 @@ public:
     bool Parse(const core::IXmlNode* root_node) override;
 
 private:
+    std::string m_xml;
     std::string m_version;
     std::string m_id;
     std::string m_chaveAcesso;

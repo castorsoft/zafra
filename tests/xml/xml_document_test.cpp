@@ -42,3 +42,16 @@ TEST(XmlDocumentTest, ReadAttribute) {
     ASSERT_TRUE(id_attr.has_value());
     EXPECT_EQ(id_attr.value(), "NFe123456");
 }
+
+TEST(XmlDocumentTest, NodeToString) {
+    XmlDocument doc;
+    std::string xml = R"(<infNFe Id="NFe123456"><emit><CNPJ>12345678000199</CNPJ></emit></infNFe>)";
+    ASSERT_TRUE(doc.LoadFromString(xml));
+
+    auto root = doc.GetRoot();
+    ASSERT_NE(root, nullptr);
+    std::string node_xml = root->ToString();
+    EXPECT_FALSE(node_xml.empty());
+    EXPECT_TRUE(node_xml.find("12345678000199") != std::string::npos);
+    EXPECT_TRUE(node_xml.find("infNFe") != std::string::npos);
+}

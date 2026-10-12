@@ -88,6 +88,10 @@ bool NFeDocument::Parse(const core::IXmlNode* root_node) {
 
     if (!nfe_node) return false;
 
+    if (m_xml.empty()) {
+        m_xml = root_node->ToString();
+    }
+
     auto infNFe = nfe_node->GetChild("infNFe");
     if (infNFe) {
         auto versao = infNFe->GetAttribute("versao");
@@ -153,7 +157,11 @@ bool NFeDocumentEmit::Parse(const core::IXmlNode *emitNode) {
     m_razaoSocial = emitNode->GetChild("xNome")->GetValue();
     m_nomeFantasia = emitNode->GetChild("xFant") ? emitNode->GetChild("xFant")->GetValue() : m_razaoSocial;
     m_inscricaoEstadual = emitNode->GetChild("IE")->GetValue();
-    m_inscricaoMunicipal = emitNode->GetChild("IM")->GetValue();
+    if (emitNode->GetChild("IM")) {
+        m_inscricaoMunicipal = emitNode->GetChild("IM")->GetValue();
+    } else {
+        m_inscricaoMunicipal = "";
+    }
 
     if (auto enderEmit = emitNode->GetChild("enderEmit")) {
         if (!m_enderEmit) m_enderEmit = new NFeDocumentEndereco();

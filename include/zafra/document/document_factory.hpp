@@ -11,8 +11,8 @@ namespace document {
 
 class DocumentFactory {
 public:
-    // Detecta o tipo de documento pelo nó raiz e retorna a instância apropriada
-    static std::unique_ptr<core::IDocument> DetectAndCreate(const core::IXmlNode* root_node);
+    // Detecta o tipo de documento a partir de uma string XML e retorna a instância apropriada
+    static std::unique_ptr<core::IDocument> DetectAndCreate(const std::string& xml_content);
 };
 
 } // namespace document

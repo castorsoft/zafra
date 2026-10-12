@@ -17,6 +17,7 @@ public:
     std::vector<std::unique_ptr<core::IXmlNode>> GetChildren(const std::string& name) const override;
     std::unique_ptr<core::IXmlNode> SelectSingleNode(const std::string& xpath) const override;
     std::optional<std::string> GetAttribute(const std::string& name) const override;
+    std::string ToString() const override;
 
 private:
     const tinyxml2::XMLElement* m_node;

@@ -52,6 +52,13 @@ std::optional<std::string> XmlNode::GetAttribute(const std::string& name) const 
     return std::string(attr);
 }
 
+std::string XmlNode::ToString() const {
+    if (!m_node) return "";
+    tinyxml2::XMLPrinter printer;
+    m_node->Accept(&printer);
+    return printer.CStr();
+}
+
 bool XmlDocument::LoadFromString(const std::string& xml_content) {
     return m_doc.Parse(xml_content.c_str()) == tinyxml2::XML_SUCCESS;
 }

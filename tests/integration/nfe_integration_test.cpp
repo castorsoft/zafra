@@ -1,12 +1,12 @@
 #include <gtest/gtest.h>
 #include <filesystem>
+#include <fstream>
+#include <sstream>
 #include <iostream>
-#include "zafra/xml/xml_document.hpp"
 #include "zafra/document/document_factory.hpp"
 #include "zafra/document/documents/nfe_document.hpp"
 
 using namespace zafra::core;
-using namespace zafra::xml;
 using namespace zafra::document;
 namespace fs = std::filesystem;
 
@@ -17,13 +17,13 @@ class NFeIntegrationTest : public ::testing::TestWithParam<std::string> {
 TEST_P(NFeIntegrationTest, LeXMLComSucessoSemSegfault) {
     std::string filePath = GetParam();
 
-    XmlDocument doc;
-    ASSERT_TRUE(doc.LoadFromFile(filePath)) << "Falha ao carregar o arquivo XML: " << filePath;
+    std::ifstream file(filePath);
+    ASSERT_TRUE(file.is_open()) << "Falha ao abrir o arquivo: " << filePath;
+    std::stringstream buffer;
+    buffer << file.rdbuf();
+    std::string xmlContent = buffer.str();
 
-    auto root = doc.GetRoot();
-    ASSERT_NE(root, nullptr) << "Raiz do XML não encontrada no arquivo: " << filePath;
-
-    auto nfe_doc = DocumentFactory::DetectAndCreate(root.get());
+    auto nfe_doc = DocumentFactory::DetectAndCreate(xmlContent);
 
     // Como a factory só deve falhar se o tipo do documento não for NFe/nfeProc ou faltarem tags muito vitais,
     // garantimos que conseguimos criar a instância.
@@ -38,6 +38,8 @@ TEST_P(NFeIntegrationTest, LeXMLComSucessoSemSegfault) {
     EXPECT_FALSE(nfe->GetId().empty()) << "A NFe não extraiu o Id corretamente.";
     EXPECT_FALSE(nfe->getChaveAcesso().empty()) << "A NFe não extraiu a Chave de Acesso corretamente.";
     EXPECT_FALSE(nfe->GetVersion().empty()) << "A NFe não extraiu a versão corretamente.";
+    EXPECT_FALSE(nfe->GetXML().empty()) << "A NFe não retornou o XML vinculado.";
+    EXPECT_EQ(nfe->GetXML(), nfe->getXML());
 
     // Verifica dados do Emitente (opcional, pode depender se todos os XMLs tem emit)
     auto emit = nfe->GetEmit();

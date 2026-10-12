@@ -69,6 +69,12 @@ class IDocument {
 public:
     virtual ~IDocument() = default;
 
+    virtual std::string GetXML() const = 0;
+    virtual std::string getXML() const { return GetXML(); }
+
+    virtual void SetXML(const std::string& xml) {}
+    virtual void setXML(const std::string& xml) { SetXML(xml); }
+
     virtual DocumentType GetType() const = 0;
     virtual std::string GetVersion() const = 0;
     virtual std::string GetId() const = 0;

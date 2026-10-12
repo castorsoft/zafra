@@ -19,9 +19,11 @@ add_library(zafra
     src/document/documents/nfe_document.cpp
 )
 
+include(GNUInstallDirs)
+
 target_include_directories(zafra PUBLIC
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-    $<INSTALL_INTERFACE:include>
+    $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
 )
 
 target_link_libraries(zafra PUBLIC LibXml2 tinyxml2)
@@ -30,18 +32,12 @@ target_link_libraries(zafra PUBLIC LibXml2 tinyxml2)
 enable_testing()
 add_subdirectory(tests)
 
-include(GNUInstallDirs)
-
-target_include_directories(zafra PUBLIC
-    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-    $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
-)
-
 install(TARGETS zafra LibXml2 tinyxml2
     EXPORT zafraConfig
     ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}   # Static libraries (.a, .lib)
     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}   # Shared libraries (.so)
     RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}   # DLLs on Windows (.dll)
+    INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
 )
 
 install(DIRECTORY include/ DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
