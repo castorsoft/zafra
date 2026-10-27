@@ -59,6 +59,25 @@ namespace {
 
         return t;
     }
+
+    std::string RemoveLineBreaks(const std::string& str, bool replaceWithSpace = true) {
+        std::string result;
+        result.reserve(str.size());
+        for (char c : str) {
+            if (c == '\r') continue;
+            if (c == '\n') {
+                if (replaceWithSpace && !result.empty() && result.back() != ' ') {
+                    result += ' ';
+                }
+            } else {
+                result += c;
+            }
+        }
+        while (!result.empty() && result.back() == ' ') {
+            result.pop_back();
+        }
+        return result;
+    }
 }
 
 namespace zafra {
@@ -182,9 +201,13 @@ bool NFeDocumentEndereco::Parse(const core::IXmlNode *enderEmitNode) {
     m_municipio = enderEmitNode->GetChild("xMun")->GetValue();
     m_uf = enderEmitNode->GetChild("UF")->GetValue();
     m_cep = enderEmitNode->GetChild("CEP")->GetValue();
-    m_codPais = std::stoi(enderEmitNode->GetChild("cPais")->GetValue());
-    m_pais = enderEmitNode->GetChild("xPais")->GetValue();
 
+    if (enderEmitNode->GetChild("cPais")) {
+        m_codPais = std::stoi(enderEmitNode->GetChild("cPais")->GetValue());
+    }
+    if (enderEmitNode->GetChild("xPais")) {
+        m_pais = enderEmitNode->GetChild("xPais")->GetValue();
+    }
     if (enderEmitNode->GetChild("fone")) {
         m_fone = enderEmitNode->GetChild("fone")->GetValue();
     }
@@ -262,7 +285,7 @@ bool NFeDocumentDetProd::Parse(const core::IXmlNode *prodNode)
 
     if (auto node = prodNode->GetChild("cProd")) m_cProd = node->GetValue();
     if (auto node = prodNode->GetChild("cEAN")) m_cEan = node->GetValue();
-    if (auto node = prodNode->GetChild("xProd")) m_xProd = node->GetValue();
+    if (auto node = prodNode->GetChild("xProd")) m_xProd = RemoveLineBreaks(node->GetValue());
     if (auto node = prodNode->GetChild("NCM")) m_ncm = node->GetValue();
     if (auto node = prodNode->GetChild("CEST")) m_cest = node->GetValue();
     if (auto node = prodNode->GetChild("CFOP")) m_cfop = node->GetValue();
