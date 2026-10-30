@@ -50,7 +50,7 @@ public:
     std::string GetMunicipio() const { return m_municipio; }
     std::string GetUf() const { return m_uf; }
     std::string GetCEP() const { return m_cep; }
-    int GetCodPais() const { return m_codPais; }
+    std::optional<int> GetCodPais() const { return m_codPais; }
     std::string GetPais() const { return m_pais; }
     std::optional<std::string> GetFone() const { return m_fone; }
 
@@ -65,7 +65,7 @@ private:
     std::string m_municipio;
     std::string m_uf;
     std::string m_cep;
-    int m_codPais;
+    std::optional<int> m_codPais;
     std::string m_pais;
     std::optional<std::string> m_fone;
 };
