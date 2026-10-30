@@ -1,6 +1,0 @@
-[submodule "extern/libxml2"]
-	path = extern/libxml2
-	url = https://gitlab.gnome.org/GNOME/libxml2.git
-[submodule "extern/tinyxml2"]
-	path = extern/tinyxml2
-	url = https://github.com/leethomason/tinyxml2.git
