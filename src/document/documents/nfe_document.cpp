@@ -200,7 +200,8 @@ bool NFeDocumentEndereco::Parse(const core::IXmlNode *enderEmitNode) {
     m_codMunicipio = std::stoi(enderEmitNode->GetChild("cMun")->GetValue());
     m_municipio = enderEmitNode->GetChild("xMun")->GetValue();
     m_uf = enderEmitNode->GetChild("UF")->GetValue();
-    m_cep = enderEmitNode->GetChild("CEP")->GetValue();
+    if (enderEmitNode->GetChild("CEP"))
+        m_cep = enderEmitNode->GetChild("CEP")->GetValue();
 
     if (enderEmitNode->GetChild("cPais")) {
         m_codPais = std::stoi(enderEmitNode->GetChild("cPais")->GetValue());
@@ -220,7 +221,15 @@ NFeDocumentDest::~NFeDocumentDest() {
 }
 
 bool NFeDocumentDest::Parse(const core::IXmlNode *destNode) {
-    m_cnpjCpf = destNode->GetChild("CNPJ") ? destNode->GetChild("CNPJ")->GetValue() : destNode->GetChild("CPF")->GetValue();
+    if (destNode->GetChild("CNPJ")) {
+        m_cnpjCpf = destNode->GetChild("CNPJ")->GetValue();
+    } else if (destNode->GetChild("CPF")) {
+        m_cnpjCpf = destNode->GetChild("CPF")->GetValue();
+    }
+    if (destNode->GetChild("idEstrangeiro")) {
+        m_idEstrangeiro = destNode->GetChild("idEstrangeiro")->GetValue();
+    }
+
     m_nome = destNode->GetChild("xNome")->GetValue();
     if (destNode->GetChild("IE")) {
         m_inscricaoEstadual = destNode->GetChild("IE")->GetValue();
@@ -310,8 +319,9 @@ NFeDocumentDetImposto::~NFeDocumentDetImposto() {
     if (m_PISST) delete m_PISST.value();
     if (m_COFINS) delete m_COFINS.value();
     if (m_COFINSST) delete m_COFINSST.value();
-    if (m_ICMSUFDEST) delete m_ICMSUFDEST.value();
+    if (m_ICMSUFDest) delete m_ICMSUFDest.value();
     if (m_IS) delete m_IS.value();
+    if (m_IBSCBS) delete m_IBSCBS.value();
 }
 
 bool NFeDocumentDetImposto::Parse(const core::IXmlNode *impostoNode)
@@ -362,7 +372,7 @@ bool NFeDocumentDetImposto::Parse(const core::IXmlNode *impostoNode)
 
     if (auto icmsufdestNode = impostoNode->GetChild("ICMSUFDest")) {
         auto icmsufdest = new NFeDocumentDetImpostoICMSUFDest();
-        if (icmsufdest->Parse(icmsufdestNode.get())) m_ICMSUFDEST = icmsufdest;
+        if (icmsufdest->Parse(icmsufdestNode.get())) m_ICMSUFDest = icmsufdest;
         else delete icmsufdest;
     }
 
@@ -370,6 +380,12 @@ bool NFeDocumentDetImposto::Parse(const core::IXmlNode *impostoNode)
         auto is = new NFeDocumentDetImpostoIS();
         if (is->Parse(isNode.get())) m_IS = is;
         else delete is;
+    }
+
+    if (auto ibscbsNode = impostoNode->GetChild("IBSCBS")) {
+        auto ibscbs = new NFeDocumentDetImpostoIBSCBS();
+        if (ibscbs->Parse(ibscbsNode.get())) m_IBSCBS = ibscbs;
+        else delete ibscbs;
     }
 
     return true;
@@ -497,7 +513,8 @@ bool NFeDocumentDetImpostoICMSUFDest::Parse(const core::IXmlNode *icmsufdestNode
 bool NFeDocumentDetImpostoIS::Parse(const core::IXmlNode *isNode) {
     if (!isNode) return false;
 
-    if (auto node = isNode->GetChild("CST")) m_CST = node->GetValue();
+    if (auto node = isNode->GetChild("CSTIS")) m_CST = node->GetValue();
+    else if (auto node = isNode->GetChild("CST")) m_CST = node->GetValue();
     if (auto node = isNode->GetChild("cClassTribIS")) m_cClassTribIS = node->GetValue();
     if (auto node = isNode->GetChild("vBCIS")) m_vBCIS = ParseDouble(node->GetValue());
     if (auto node = isNode->GetChild("pIS")) m_pIS = ParseDouble(node->GetValue());
@@ -505,6 +522,74 @@ bool NFeDocumentDetImpostoIS::Parse(const core::IXmlNode *isNode) {
     if (auto node = isNode->GetChild("uTrib")) m_uTrib = node->GetValue();
     if (auto node = isNode->GetChild("qTrib")) m_qTrib = ParseDouble(node->GetValue());
     if (auto node = isNode->GetChild("vIS")) m_vIS = ParseDouble(node->GetValue());
+
+    return true;
+}
+
+bool NFeDocumentDetImpostoIBSCBSGrupo::Parse(const core::IXmlNode *grupoNode) {
+    if (!grupoNode) return false;
+
+    if (auto node = grupoNode->GetChild("pIBSUF")) m_pAliq = ParseDouble(node->GetValue());
+    else if (auto node = grupoNode->GetChild("pIBSMun")) m_pAliq = ParseDouble(node->GetValue());
+    else if (auto node = grupoNode->GetChild("pCBS")) m_pAliq = ParseDouble(node->GetValue());
+
+    if (auto node = grupoNode->GetChild("vIBSUF")) m_vTrib = ParseDouble(node->GetValue());
+    else if (auto node = grupoNode->GetChild("vIBSMun")) m_vTrib = ParseDouble(node->GetValue());
+    else if (auto node = grupoNode->GetChild("vCBS")) m_vTrib = ParseDouble(node->GetValue());
+
+    if (auto gDif = grupoNode->GetChild("gDif")) {
+        if (auto node = gDif->GetChild("pDif")) m_pDif = ParseDouble(node->GetValue());
+        if (auto node = gDif->GetChild("vDif")) m_vDif = ParseDouble(node->GetValue());
+    }
+
+    if (auto gDevTrib = grupoNode->GetChild("gDevTrib")) {
+        if (auto node = gDevTrib->GetChild("pDevTrib")) m_pDevTrib = ParseDouble(node->GetValue());
+        if (auto node = gDevTrib->GetChild("vDevTrib")) m_vDevTrib = ParseDouble(node->GetValue());
+    }
+
+    if (auto gRed = grupoNode->GetChild("gRed")) {
+        if (auto node = gRed->GetChild("pRedAliq")) m_pRedAliq = ParseDouble(node->GetValue());
+        if (auto node = gRed->GetChild("pAliqEfet")) m_pAliqEfet = ParseDouble(node->GetValue());
+    }
+
+    return true;
+}
+
+NFeDocumentDetImpostoIBSCBS::~NFeDocumentDetImpostoIBSCBS() {
+    if (m_IBSUF) delete m_IBSUF.value();
+    if (m_IBSMun) delete m_IBSMun.value();
+    if (m_CBS) delete m_CBS.value();
+}
+
+bool NFeDocumentDetImpostoIBSCBS::Parse(const core::IXmlNode *ibscbsNode) {
+    if (!ibscbsNode) return false;
+
+    if (auto node = ibscbsNode->GetChild("CST")) m_CST = node->GetValue();
+    if (auto node = ibscbsNode->GetChild("cClassTrib")) m_cClassTrib = node->GetValue();
+    if (auto node = ibscbsNode->GetChild("indDoacao")) m_indDoacao = node->GetValue();
+
+    if (auto gIBSCBS = ibscbsNode->GetChild("gIBSCBS")) {
+        if (auto node = gIBSCBS->GetChild("vBC")) m_vBC = ParseDouble(node->GetValue());
+        if (auto node = gIBSCBS->GetChild("vIBS")) m_vIBS = ParseDouble(node->GetValue());
+
+        if (auto gIBSUF = gIBSCBS->GetChild("gIBSUF")) {
+            auto ibsuf = new NFeDocumentDetImpostoIBSCBSGrupo();
+            if (ibsuf->Parse(gIBSUF.get())) m_IBSUF = ibsuf;
+            else delete ibsuf;
+        }
+
+        if (auto gIBSMun = gIBSCBS->GetChild("gIBSMun")) {
+            auto ibsmun = new NFeDocumentDetImpostoIBSCBSGrupo();
+            if (ibsmun->Parse(gIBSMun.get())) m_IBSMun = ibsmun;
+            else delete ibsmun;
+        }
+
+        if (auto gCBS = gIBSCBS->GetChild("gCBS")) {
+            auto cbs = new NFeDocumentDetImpostoIBSCBSGrupo();
+            if (cbs->Parse(gCBS.get())) m_CBS = cbs;
+            else delete cbs;
+        }
+    }
 
     return true;
 }

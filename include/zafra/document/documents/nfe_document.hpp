@@ -49,7 +49,7 @@ public:
     int GetCodMunicipio() const { return m_codMunicipio; }
     std::string GetMunicipio() const { return m_municipio; }
     std::string GetUf() const { return m_uf; }
-    std::string GetCEP() const { return m_cep; }
+    std::optional<std::string> GetCEP() const { return m_cep; }
     std::optional<int> GetCodPais() const { return m_codPais; }
     std::string GetPais() const { return m_pais; }
     std::optional<std::string> GetFone() const { return m_fone; }
@@ -64,7 +64,7 @@ private:
     int m_codMunicipio;
     std::string m_municipio;
     std::string m_uf;
-    std::string m_cep;
+    std::optional<std::string> m_cep;
     std::optional<int> m_codPais;
     std::string m_pais;
     std::optional<std::string> m_fone;
@@ -75,7 +75,7 @@ public:
     NFeDocumentDest() = default;
     ~NFeDocumentDest();
 
-    std::string GetCnpjCpf() const { return m_cnpjCpf; }
+    std::optional<std::string> GetCnpjCpf() const { return m_cnpjCpf; }
     std::string GetNome() const { return m_nome; }
     std::optional<std::string> GetInscricaoEstadual() const { return m_inscricaoEstadual; }
     std::optional<std::string> GetInscricaoMunicipal() const { return m_inscricaoMunicipal; }
@@ -85,7 +85,8 @@ public:
 
     bool Parse(const core::IXmlNode* destNode);
 private:
-    std::string m_cnpjCpf;
+    std::optional<std::string> m_cnpjCpf;
+    std::optional<std::string> m_idEstrangeiro;
     std::string m_nome;
     std::optional<std::string> m_inscricaoEstadual;
     std::optional<std::string> m_inscricaoMunicipal;
@@ -358,6 +359,61 @@ private:
     std::optional<double> m_vIS;
 };
 
+class NFeDocumentDetImpostoIBSCBSGrupo {
+public:
+    NFeDocumentDetImpostoIBSCBSGrupo() = default;
+
+    double GetPAliq() const { return m_pAliq; }
+    double GetVTrib() const { return m_vTrib; }
+    std::optional<double> GetPDif() const { return m_pDif; }
+    std::optional<double> GetVDif() const { return m_vDif; }
+    std::optional<double> GetPDevTrib() const { return m_pDevTrib; }
+    std::optional<double> GetVDevTrib() const { return m_vDevTrib; }
+    std::optional<double> GetPRedAliq() const { return m_pRedAliq; }
+    std::optional<double> GetPAliqEfet() const { return m_pAliqEfet; }
+
+    bool Parse(const core::IXmlNode* grupoNode);
+
+private:
+    double m_pAliq = 0.0;
+    double m_vTrib = 0.0;
+    std::optional<double> m_pDif;
+    std::optional<double> m_vDif;
+    std::optional<double> m_pDevTrib;
+    std::optional<double> m_vDevTrib;
+    std::optional<double> m_pRedAliq;
+    std::optional<double> m_pAliqEfet;
+};
+
+class NFeDocumentDetImpostoIBSCBS {
+public:
+    NFeDocumentDetImpostoIBSCBS() = default;
+    ~NFeDocumentDetImpostoIBSCBS();
+
+    std::string GetCST() const { return m_CST; }
+    std::string GetCClassTrib() const { return m_cClassTrib; }
+    std::optional<std::string> GetIndDoacao() const { return m_indDoacao; }
+    std::optional<double> GetVBC() const { return m_vBC; }
+    std::optional<double> GetVIBS() const { return m_vIBS; }
+
+    std::optional<NFeDocumentDetImpostoIBSCBSGrupo*> GetIBSUF() const { return m_IBSUF; }
+    std::optional<NFeDocumentDetImpostoIBSCBSGrupo*> GetIBSMun() const { return m_IBSMun; }
+    std::optional<NFeDocumentDetImpostoIBSCBSGrupo*> GetCBS() const { return m_CBS; }
+
+    bool Parse(const core::IXmlNode* ibscbsNode);
+
+private:
+    std::string m_CST;
+    std::string m_cClassTrib;
+    std::optional<std::string> m_indDoacao;
+    std::optional<double> m_vBC;
+    std::optional<double> m_vIBS;
+
+    std::optional<NFeDocumentDetImpostoIBSCBSGrupo*> m_IBSUF;
+    std::optional<NFeDocumentDetImpostoIBSCBSGrupo*> m_IBSMun;
+    std::optional<NFeDocumentDetImpostoIBSCBSGrupo*> m_CBS;
+};
+
 class NFeDocumentDetImposto {
 public:
     NFeDocumentDetImposto() = default;
@@ -370,9 +426,9 @@ public:
     std::optional<NFeDocumentDetImpostoPISST*> GetPISST() const { return m_PISST; }
     std::optional<NFeDocumentDetImpostoCOFINS*> GetCOFINS() const { return m_COFINS; }
     std::optional<NFeDocumentDetImpostoCOFINSST*> GetCOFINSST() const { return m_COFINSST; }
-    std::optional<NFeDocumentDetImpostoICMSUFDest*> GetICMSUFDest() const { return m_ICMSUFDEST; }
+    std::optional<NFeDocumentDetImpostoICMSUFDest*> GetICMSUFDest() const { return m_ICMSUFDest; }
     std::optional<NFeDocumentDetImpostoIS*> GetIS() const { return m_IS; }
-    // std::optional<NFeDocumentDetImpostoIBSCBS*> GetIBSCBS() const { return m_IBSCBS; }
+    std::optional<NFeDocumentDetImpostoIBSCBS*> GetIBSCBS() const { return m_IBSCBS; }
 
     bool Parse(const core::IXmlNode* impostoNode);
 
@@ -384,10 +440,9 @@ private:
     std::optional<NFeDocumentDetImpostoPISST*> m_PISST;
     std::optional<NFeDocumentDetImpostoCOFINS*> m_COFINS;
     std::optional<NFeDocumentDetImpostoCOFINSST*> m_COFINSST;
-    std::optional<NFeDocumentDetImpostoICMSUFDest*> m_ICMSUFDEST;
+    std::optional<NFeDocumentDetImpostoICMSUFDest*> m_ICMSUFDest;
     std::optional<NFeDocumentDetImpostoIS*> m_IS;
-    // TODO: IBSCBS
-    // std::optional<NFeDocumentDetImpostoIBSCBS*> m_IBSCBS;
+    std::optional<NFeDocumentDetImpostoIBSCBS*> m_IBSCBS;
 };
 
 class NFeDocumentDet {

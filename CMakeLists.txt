@@ -15,6 +15,13 @@ include(FetchContent)
 
 option(BUILD_SHARED_LIBS "Build shared libraries" ON)
 
+if(CMAKE_CURRENT_SOURCE_DIR STREQUAL CMAKE_SOURCE_DIR)
+    set(ZAFRA_IS_TOP_LEVEL ON)
+else()
+    set(ZAFRA_IS_TOP_LEVEL OFF)
+endif()
+option(ZAFRA_BUILD_TESTS "Build Zafra unit and integration tests" ${ZAFRA_IS_TOP_LEVEL})
+
 set(LIBXML2_WITH_ICONV OFF CACHE BOOL "" FORCE)
 set(LIBXML2_WITH_LZMA OFF CACHE BOOL "" FORCE)
 set(LIBXML2_WITH_PYTHON OFF CACHE BOOL "" FORCE)
@@ -61,8 +68,10 @@ target_include_directories(zafra PUBLIC
 target_link_libraries(zafra PUBLIC LibXml2 tinyxml2)
 
 # Configure Tests
-enable_testing()
-add_subdirectory(tests)
+if(ZAFRA_BUILD_TESTS)
+    enable_testing()
+    add_subdirectory(tests)
+endif()
 
 install(TARGETS zafra LibXml2 tinyxml2
     EXPORT zafraConfig
